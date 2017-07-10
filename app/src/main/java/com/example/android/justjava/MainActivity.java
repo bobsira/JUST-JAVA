@@ -9,7 +9,10 @@ package com.example.android.justjava;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -25,25 +28,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
     }
 
-    private String createOrderSummary(int price) {
-        String priceMessage = "Name:Kaptain Kuna";
-        priceMessage += "\nQuantity: " + quantity;
-        priceMessage += "\nTotal: $" + price;
-        priceMessage += "\nThank you!";
-        return priceMessage;
-    }
 
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
+        // Get user's name
+        EditText nameField = (EditText) findViewById(R.id.name_field);
+        Editable nameEditable = nameField.getText();
+        String name = nameEditable.toString();
+
+        // Figure out if the user wants whipped cream topping
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
+        boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
+
+        // Figure out if the user wants choclate topping
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.whipped_Cream_CheckBox);
+        boolean hasChocolate = chocolateCheckBox.isChecked();
+
         int price = calculatePrice();
-        displayMessage(createOrderSummary(price));
+        displayMessage(createOrderSummary(name, price, hasWhippedCream, hasChocolate));
 
     }
 
+    private String createOrderSummary(String name, int price, boolean hasWhippedCream, boolean hasChocolate) {
+        String priceMessage = "Name:" + name;
+        priceMessage += "\nAdd Whipped Cream? " + hasWhippedCream;
+        priceMessage += "\nAdd Chocolate? " + hasChocolate;
+        priceMessage += "\nQuantity: " + quantity;
+        priceMessage += "\nTotal: $" + price;
+        priceMessage += "\nThank you!";
+        return priceMessage;
+    }
     /**
      * Calculates the price of the order.
      *
